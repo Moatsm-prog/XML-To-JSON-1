@@ -2,3 +2,4 @@
 #include "format.h"
 #include "tree.h"
 #include "json.h"
+#include "compression.h"
