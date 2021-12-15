@@ -13,7 +13,13 @@ SOURCES += \
     Sources/xml_editor.cpp
 
 HEADERS += \
-    Headers/xml_editor.h
+    Headers/compression.h \
+    Headers/files_and_check.h \
+    Headers/format.h \
+    Headers/header.h \
+    Headers/json.h \
+    Headers/tree.h \
+    Headers/xml_editor.h \
 
 FORMS += \
     Forms/xml_editor.ui

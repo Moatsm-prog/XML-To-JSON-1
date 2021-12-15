@@ -15,7 +15,12 @@ public:
     XML_Editor(QWidget *parent = nullptr);
     ~XML_Editor();
 
+private slots:
+    void on_actionOpen_triggered();
+
 private:
     Ui::XML_Editor *ui;
+
+    void actionButtons(bool b);
 };
 #endif // XML_EDITOR_H
