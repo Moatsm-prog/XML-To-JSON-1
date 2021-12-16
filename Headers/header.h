@@ -6,3 +6,5 @@
 
 Node* root;
 string input_string;
+
+enum{XML, JSON} lastOp = XML;

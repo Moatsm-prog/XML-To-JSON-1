@@ -18,6 +18,12 @@ public:
 private slots:
     void on_actionOpen_triggered();
 
+    void on_format_button_clicked();
+
+    void on_convert_clicked();
+
+    void on_compress_xml_clicked();
+
 private:
     Ui::XML_Editor *ui;
 

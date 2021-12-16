@@ -76,3 +76,33 @@ void XML_Editor::actionButtons(bool b){
     ui->Decomp_xml->setEnabled(0);
     ui->Decomp_json->setEnabled(0);
 }
+
+void XML_Editor::on_format_button_clicked()
+{
+    if(!INPUT_FILE.size()) XML_Editor::on_actionOpen_triggered();
+    string formated_xml = ident(xml);
+    ui->output_textedit->setText(QString::fromStdString(formated_xml));
+    lastOp = XML;
+}
+
+
+void XML_Editor::on_convert_clicked()
+{
+    if(!INPUT_FILE.size()) XML_Editor::on_actionOpen_triggered();
+    if(!root) root = xml_to_tree(xml);
+    string json = tree_to_json(root, normal);
+    ui->output_textedit->setText(QString::fromStdString(json));
+    lastOp = JSON;
+}
+
+
+void XML_Editor::on_compress_xml_clicked()
+{
+    if(!INPUT_FILE.size()){
+        XML_Editor::on_actionOpen_triggered();
+        return;
+    }
+    string EnXml = encode(xml);
+    QString fname = QFileDialog::getSaveFileName(this, "Save Compressed XML", ".", "Compressed XML files (*.dxml)" );
+    saveAsFile((fname + ".dxml").toStdString(), EnXml);
+}
