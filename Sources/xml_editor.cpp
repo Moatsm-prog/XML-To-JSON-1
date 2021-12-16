@@ -9,6 +9,11 @@ XML_Editor::XML_Editor(QWidget *parent)
     , ui(new Ui::XML_Editor)
 {
     ui->setupUi(this);
+
+    for (int i = 0; i < 11; i++){
+            tagToChar[open_scheme[i]] = (char)(i+14);
+            tagToChar[close_scheme[i]] = (char)(i+33);
+    }
     ui->output_textedit->setTabStopDistance(15);
 }
 
@@ -21,6 +26,7 @@ void XML_Editor::on_actionOpen_triggered()
 {
     //QDir::homePath()
     QString file_name = QFileDialog::getOpenFileName(this, "open XML file", ".", tr("XML & JSON (*.xml *.dxml *.dson)"));
+    if(file_name == "") return;
     QString ext = file_name.right(4);
     bool checkable = 1;
     qDebug() << "opening "<< ext << "file";
@@ -66,6 +72,7 @@ void XML_Editor::on_actionOpen_triggered()
         actionButtons(0);
     }
     ui->input_textedit->setText(QString::fromStdString(input_string));
+    ui->output_textedit->setText("");
 }
 
 void XML_Editor::actionButtons(bool b){
@@ -85,7 +92,6 @@ void XML_Editor::on_format_button_clicked()
     lastOp = XML;
 }
 
-
 void XML_Editor::on_convert_clicked()
 {
     if(!INPUT_FILE.size()) XML_Editor::on_actionOpen_triggered();
@@ -94,7 +100,6 @@ void XML_Editor::on_convert_clicked()
     ui->output_textedit->setText(QString::fromStdString(json));
     lastOp = JSON;
 }
-
 
 void XML_Editor::on_compress_xml_clicked()
 {
@@ -106,3 +111,52 @@ void XML_Editor::on_compress_xml_clicked()
     QString fname = QFileDialog::getSaveFileName(this, "Save Compressed XML", ".", "Compressed XML files (*.dxml)" );
     saveAsFile((fname + ".dxml").toStdString(), EnXml);
 }
+
+void XML_Editor::on_comp_json_clicked()
+{
+    if(!INPUT_FILE.size()){
+        XML_Editor::on_actionOpen_triggered();
+        return;
+    }
+    if(!root) root = xml_to_tree(xml);
+    string json_comp = tree_to_json(root, compressed);
+    QString fname = QFileDialog::getSaveFileName(this, "Save Compressed JSON", ".", "Compressed JSON files (*.dson)" );
+    saveAsFile((fname + ".dson").toStdString(), json_comp);
+}
+
+void XML_Editor::on_Decomp_xml_clicked()
+{
+    string xml_converted = decode(input_string);
+    ui->output_textedit->setText(QString::fromStdString(ident(xml_converted)));
+    lastOp = XML;
+}
+
+void XML_Editor::on_Decomp_json_clicked()
+{
+    string json_converted = decode_json(input_string);
+    ui->output_textedit->setText(QString::fromStdString(json_converted));
+    lastOp = JSON;
+}
+
+void XML_Editor::on_actionSave_as_triggered()
+{
+    QString fname = QFileDialog::getSaveFileName(this, "Save Output file as", ".", "Allfiles(*)" );
+    string output = ui->output_textedit->toPlainText().toStdString();
+    if(output.size()){
+        if(lastOp == XML)
+            saveAsFile((fname + ".xml").toStdString(), output);
+        else
+            saveAsFile((fname + ".json").toStdString(), output);
+    }
+}
+
+
+void XML_Editor::on_actionGithub_triggered()
+{
+    QMessageBox msg;
+    msg.setTextFormat(Qt::RichText);
+    msg.setText("<a href=\"https://github.com/MustafaAmer-1/XML-To-JSON\">Github Repository</a>");
+    msg.setStandardButtons(QMessageBox::Ok);
+    msg.exec();
+}
+

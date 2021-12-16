@@ -24,6 +24,16 @@ private slots:
 
     void on_compress_xml_clicked();
 
+    void on_comp_json_clicked();
+
+    void on_Decomp_xml_clicked();
+
+    void on_Decomp_json_clicked();
+
+    void on_actionSave_as_triggered();
+
+    void on_actionGithub_triggered();
+
 private:
     Ui::XML_Editor *ui;
 
