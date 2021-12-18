@@ -52,7 +52,7 @@ std::string open_file(std::string path){
     std::ifstream file(path.c_str());
     std::string tmp;
     while(getline(file, tmp)){
-        orginal += tmp;
+        orginal += tmp + '\n';
         tmp = trim(tmp);
         xml += tmp;
     }

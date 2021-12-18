@@ -2,8 +2,9 @@
 #include "ui_xml_editor.h"
 #include "QFileDialog"
 #include "QMessageBox"
-#include "../Headers/header.h"
 #include "QTextCursor"
+#include "../Headers/header.h"
+
 XML_Editor::XML_Editor(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::XML_Editor)
@@ -15,6 +16,7 @@ XML_Editor::XML_Editor(QWidget *parent)
             tagToChar[close_scheme[i]] = (char)(i+33);
     }
     ui->output_textedit->setTabStopDistance(15);
+    ui->input_textedit->setTabStopDistance(15);
 }
 
 XML_Editor::~XML_Editor()
@@ -24,6 +26,7 @@ XML_Editor::~XML_Editor()
 
 void XML_Editor::on_actionOpen_triggered()
 {
+    ui->output_textedit->setText("");
     //QDir::homePath()
     QString file_name = QFileDialog::getOpenFileName(this, "open XML file", ".", tr("XML & JSON (*.xml *.dxml *.dson)"));
     if(file_name == "") return;
@@ -55,7 +58,6 @@ void XML_Editor::on_actionOpen_triggered()
         if(checkable) check();
         ui->input_textedit->setTextBackgroundColor(Qt::transparent);
     }  catch (XML_Exception* e) {
-        ui->output_textedit->setText("");
         QMessageBox::StandardButton reply;
         reply = QMessageBox::critical(this, "XML Invalid",
                               (e->msg + '\n' + "Do you want me to Autocorrect your file? ").c_str()
@@ -73,7 +75,6 @@ void XML_Editor::on_actionOpen_triggered()
         actionButtons(0);
     }
     ui->input_textedit->setText(QString::fromStdString(input_string));
-
 }
 
 void XML_Editor::actionButtons(bool b){
@@ -161,8 +162,6 @@ void XML_Editor::on_actionGithub_triggered()
     msg.exec();
 }
 
-
-
 void XML_Editor::on_verticalSlider_valueChanged(int value)
 {
 
@@ -177,4 +176,3 @@ void XML_Editor::on_verticalSlider_valueChanged(int value)
     cursor_output.movePosition( QTextCursor::Start );
     ui->output_textedit->setTextCursor(cursor_output);
 }
-
