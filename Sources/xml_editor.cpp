@@ -3,7 +3,7 @@
 #include "QFileDialog"
 #include "QMessageBox"
 #include "../Headers/header.h"
-
+#include "QTextCursor"
 XML_Editor::XML_Editor(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::XML_Editor)
@@ -55,6 +55,7 @@ void XML_Editor::on_actionOpen_triggered()
         if(checkable) check();
         ui->input_textedit->setTextBackgroundColor(Qt::transparent);
     }  catch (XML_Exception* e) {
+        ui->output_textedit->setText("");
         QMessageBox::StandardButton reply;
         reply = QMessageBox::critical(this, "XML Invalid",
                               (e->msg + '\n' + "Do you want me to Autocorrect your file? ").c_str()
@@ -72,7 +73,7 @@ void XML_Editor::on_actionOpen_triggered()
         actionButtons(0);
     }
     ui->input_textedit->setText(QString::fromStdString(input_string));
-    ui->output_textedit->setText("");
+
 }
 
 void XML_Editor::actionButtons(bool b){
@@ -158,5 +159,22 @@ void XML_Editor::on_actionGithub_triggered()
     msg.setText("<a href=\"https://github.com/MustafaAmer-1/XML-To-JSON\">Github Repository</a>");
     msg.setStandardButtons(QMessageBox::Ok);
     msg.exec();
+}
+
+
+
+void XML_Editor::on_verticalSlider_valueChanged(int value)
+{
+
+    ui->input_textedit->selectAll();
+    ui->input_textedit->setFontPointSize(value);
+    ui->output_textedit->selectAll();
+    ui->output_textedit->setFontPointSize(value);
+    QTextCursor cursor_input = ui->input_textedit->textCursor();
+    cursor_input.movePosition( QTextCursor::Start );
+    ui->input_textedit->setTextCursor(cursor_input);
+    QTextCursor cursor_output = ui->output_textedit->textCursor();
+    cursor_output.movePosition( QTextCursor::Start );
+    ui->output_textedit->setTextCursor(cursor_output);
 }
 

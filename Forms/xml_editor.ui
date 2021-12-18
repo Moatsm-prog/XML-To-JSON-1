@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>871</width>
+    <width>913</width>
     <height>600</height>
    </rect>
   </property>
@@ -78,40 +78,88 @@
      </layout>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
+     <layout class="QHBoxLayout" name="horizontalLayout_10">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <layout class="QHBoxLayout" name="horizontalLayout_12">
+        <property name="spacing">
+         <number>10</number>
+        </property>
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <property name="leftMargin">
+         <number>10</number>
+        </property>
+        <property name="topMargin">
+         <number>10</number>
+        </property>
+        <property name="rightMargin">
+         <number>10</number>
+        </property>
+        <property name="bottomMargin">
+         <number>10</number>
+        </property>
         <item>
-         <widget class="QPushButton" name="format_button">
-          <property name="styleSheet">
-           <string notr="true">QPushButton{
-	background-color: #B5FBDD;
-    border-style: outset;
-    border-width: 2px;
-    border-radius: 10px;
-    border-color: beige;
-    font: bold 14px;
-    min-width: 10em;
-    padding: 6px;
-}
-QPushButton:pressed {
-    background-color: rgb(224, 0, 0);
-    border-style: inset;
-}
-
-QPushButton:hover{
-background-color:rgb(252, 252, 252)
-}</string>
+         <layout class="QVBoxLayout" name="verticalLayout_16">
+          <property name="rightMargin">
+           <number>0</number>
           </property>
-          <property name="text">
-           <string>Format</string>
-          </property>
-         </widget>
+          <item>
+           <widget class="QSlider" name="verticalSlider">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="minimum">
+             <number>5</number>
+            </property>
+            <property name="maximum">
+             <number>25</number>
+            </property>
+            <property name="value">
+             <number>9</number>
+            </property>
+            <property name="sliderPosition">
+             <number>9</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="convert">
-          <property name="styleSheet">
-           <string notr="true">QPushButton{
+         <layout class="QVBoxLayout" name="verticalLayout_14">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_13">
+            <item>
+             <widget class="QPushButton" name="format_button">
+              <property name="styleSheet">
+               <string notr="true">QPushButton{
 	background-color: #B5FBDD;
     border-style: outset;
     border-width: 2px;
@@ -129,20 +177,16 @@ QPushButton:pressed {
 QPushButton:hover{
 background-color:rgb(252, 252, 252)
 }</string>
-          </property>
-          <property name="text">
-           <string>XML to JSON</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QPushButton" name="comp_json">
-          <property name="styleSheet">
-           <string notr="true">QPushButton{
+              </property>
+              <property name="text">
+               <string>Format</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="convert">
+              <property name="styleSheet">
+               <string notr="true">QPushButton{
 	background-color: #B5FBDD;
     border-style: outset;
     border-width: 2px;
@@ -160,16 +204,20 @@ QPushButton:pressed {
 QPushButton:hover{
 background-color:rgb(252, 252, 252)
 }</string>
-          </property>
-          <property name="text">
-           <string>Compressed JSON</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="compress_xml">
-          <property name="styleSheet">
-           <string notr="true">QPushButton{
+              </property>
+              <property name="text">
+               <string>XML to JSON</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_11">
+            <item>
+             <widget class="QPushButton" name="compress_xml">
+              <property name="styleSheet">
+               <string notr="true">QPushButton{
 	background-color: #B5FBDD;
     border-style: outset;
     border-width: 2px;
@@ -187,19 +235,16 @@ QPushButton:pressed {
 QPushButton:hover{
 background-color:rgb(252, 252, 252)
 }</string>
-          </property>
-          <property name="text">
-           <string>Compressed XML</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="Decomp_xml">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QPushButton{
+              </property>
+              <property name="text">
+               <string>Compress XML</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="comp_json">
+              <property name="styleSheet">
+               <string notr="true">QPushButton{
 	background-color: #B5FBDD;
     border-style: outset;
     border-width: 2px;
@@ -217,19 +262,19 @@ QPushButton:pressed {
 QPushButton:hover{
 background-color:rgb(252, 252, 252)
 }</string>
-          </property>
-          <property name="text">
-           <string>Decompress XML</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="Decomp_json">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QPushButton{
+              </property>
+              <property name="text">
+               <string>Compress JSON</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="Decomp_xml">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton{
 	background-color: #B5FBDD;
     border-style: outset;
     border-width: 2px;
@@ -247,11 +292,45 @@ QPushButton:pressed {
 QPushButton:hover{
 background-color:rgb(252, 252, 252)
 }</string>
-          </property>
-          <property name="text">
-           <string>Decompress JSON</string>
-          </property>
-         </widget>
+              </property>
+              <property name="text">
+               <string>Decompress XML</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="Decomp_json">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton{
+	background-color: #B5FBDD;
+    border-style: outset;
+    border-width: 2px;
+    border-radius: 10px;
+    border-color: beige;
+    font: bold 14px;
+    min-width: 10em;
+    padding: 6px;
+}
+QPushButton:pressed {
+    background-color: rgb(224, 0, 0);
+    border-style: inset;
+}
+
+QPushButton:hover{
+background-color:rgb(252, 252, 252)
+}</string>
+              </property>
+              <property name="text">
+               <string>Decompress JSON</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
@@ -264,8 +343,8 @@ background-color:rgb(252, 252, 252)
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>871</width>
-     <height>26</height>
+     <width>913</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

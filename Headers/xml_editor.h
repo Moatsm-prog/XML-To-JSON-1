@@ -34,6 +34,8 @@ private slots:
 
     void on_actionGithub_triggered();
 
+    void on_verticalSlider_valueChanged(int value);
+
 private:
     Ui::XML_Editor *ui;
 
