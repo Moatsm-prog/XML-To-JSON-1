@@ -7,7 +7,7 @@
 
 # **Table of Contents**
 
-1. [1. Table of Contributions](#Table-of-Contributions)
+1. [Table of Contributions](#Table-of-Contributions)
 2. [Background](#Background)
 3. [Implementation Details](#Implementation-Details)<br><details>
         1.[trim Function ](#trim-Function)<br>
@@ -39,7 +39,7 @@
 | Name  |
 | ------------ |
 |  [Aya tallah Tarek](https://github.com/ayatarek831) |
-| [Moaz Ayman]()  |
+| [Moaz Ayman](https://github.com/mizo7757)  |
 |  [Moatsm Tarek](https://github.com/Moatsm-prog) |
 |  [Muhammad Ahmad](https://github.com/ZeusDes)|
 |  [Mustafa Amer](https://github.com/MustafaAmer-1) |
