@@ -1,20 +1,25 @@
-#include <string>
+#include <string> 
 #include <cwctype>
 #include <fstream>
 #include <stack>
 #include <utility>
+#include <vector>
 
 std::string INPUT_FILE;
 std::string xml;
 
+std::pair<std::string, int> extract_tag(int indx, std::string xml);
+
 class XML_Exception{
 public:
     std::string msg;
-    int lineNum;
+    std::string corrected_xml;
+    std::vector<int> errors_indxs;
 
-    XML_Exception(std::string msg, int lineNum){
+    XML_Exception(std::string msg, std::string corrected_xml, std::vector<int> errors_indxs){
         this->msg = msg;
-        this->lineNum = lineNum;
+        this->corrected_xml = corrected_xml;
+        this->errors_indxs = errors_indxs;
     }
 };
 
@@ -80,47 +85,25 @@ int line_numer(int indx){
     return -1;
 }
 
-void check(){
-    std::stack<std::pair<int, std::string>> s;
-
-    for (int i = 0; i < (int)xml.size(); i++){
-        if(xml[i] == '<'){
-            std::string tag = "";
-            int j = i;
-            while(xml[j+1] != '>' && j < (int)xml.size()) tag += xml[++j];
-            
-            if(xml[i+1] != '/') /* Opening Tag */
-                s.emplace(i, tag);
-            else{ /* Closing Tag */
-                if(s.empty()){
-                    int lineNum = line_numer(i+2); 
-                    std::string msg = "Invalid XML: Tag at index " + std::to_string(i+2) + " at line " + std::to_string(lineNum) + " has no opening tag";
-                    throw new XML_Exception(msg, lineNum);
-                }
-                if(s.top().second != tag.substr(1)){
-                    int lineNum = line_numer(i+2);
-                    std::string msg =  "Invalid XML: Tag at index: " + std::to_string(i+2) + " at line " + std::to_string(lineNum) + " should be " + s.top().second;
-                    throw new XML_Exception(msg, lineNum);
-                }
-                s.pop();
-            }
-            i = j-1;
-        }
+std::string get_err_massege(std::vector<int> &errors){
+    std::string error_list = "";
+    error_list += "There are " + std::to_string(errors.size()) + " errors in:\n";
+    for (int i = 0; i < (int) errors.size() ; i++){
+        int line = line_numer(errors[i]);
+        // error_list += "\t- Tag: " + extract_tag(i, xml).first + " at line " + std::to_string(line) + "\n";
+        error_list += "\t- at line " + std::to_string(line) + "\n";
+        errors[i] = line;
     }
-    if(!s.empty()){
-        int lineNum = line_numer(s.top().first);
-        std::string msg = "Invalid XML: Tag \'" + s.top().second + "\' at index " + std::to_string(s.top().first) + " at line " + std::to_string(lineNum) + " is not closed";
-        throw new XML_Exception(msg, lineNum);
-    }
-    //if(!s.empty()) throw "Invalid XML: " + s.top().second + " is not closed";
+    return error_list;
 }
 
 std::string correct_string(std::string Original_file){
+    std::vector<int> errors;
     std::string correct = "";
-    bool last_object = 0;
+    bool last_object = 0, closing_tag = 0;
     std::stack<std::string> s;
     for(int i = 0; i < (int)Original_file.size(); i++){
-        if(Original_file[i] != '<'){
+        if(Original_file[i] != '<' && !closing_tag){
             correct += Original_file[i];
             last_object = 1;
         }
@@ -133,15 +116,27 @@ std::string correct_string(std::string Original_file){
                 if(last_object){
                     correct += "</" + s.top() + ">";
                     s.pop();
+                    errors.push_back(i);
                 }
                 correct += "<" + tag + ">";
                 s.emplace(tag);
                 i = j+1;
+                closing_tag = 0;
             }
             else{ /* Closing Tag */
+                closing_tag = 1;
                 i = j+1;
-                if(s.empty()) continue;
-                else if(s.top() != tag.substr(1)) continue ;
+                if(s.empty()){
+                    errors.push_back(i);
+                    continue;
+                }
+                else if(s.top() != tag.substr(1)){
+                    errors.push_back(i);
+                    correct += "</" + s.top() + ">";
+                    s.pop();
+                    last_object = 0;
+                    continue ;
+                }
                 else{
                     correct += "<" + tag + ">";
                     s.pop();
@@ -154,5 +149,16 @@ std::string correct_string(std::string Original_file){
         correct += "</" + s.top() + ">";
         s.pop();
     }
+
+    int j = 0;
+    std::string start_tag = "";
+    while(Original_file[j+1] != '>' && j < (int)Original_file.size()) start_tag += Original_file[++j];
+    std::string end_tag = "";
+    j = Original_file.size()-1;
+    while(Original_file[j-1] != '/' && j > 0) end_tag += Original_file[--j];
+    
+    if(start_tag != std::string(end_tag.rbegin(),end_tag.rend())) errors.push_back(j);
+    
+    if(errors.size()) throw new XML_Exception(get_err_massege(errors), correct, errors);
     return correct;
 }
