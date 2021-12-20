@@ -3,6 +3,7 @@
 #include "QFileDialog"
 #include "QMessageBox"
 #include "QTextCursor"
+#include "algorithm"
 #include "../Headers/header.h"
 
 XML_Editor::XML_Editor(QWidget *parent)
@@ -17,6 +18,7 @@ XML_Editor::XML_Editor(QWidget *parent)
     }
     ui->output_textedit->setTabStopDistance(15);
     ui->input_textedit->setTabStopDistance(15);
+    ui->input_textedit->setAcceptRichText(true);
 }
 
 XML_Editor::~XML_Editor()
@@ -54,27 +56,30 @@ void XML_Editor::on_actionOpen_triggered()
         actionButtons(1);
     }
     input_string = open_file(file_name.toStdString());
+    string corrected;
     try {
-        if(checkable) check();
+        if(checkable) corrected = correct_string(xml);
         ui->input_textedit->setTextBackgroundColor(Qt::transparent);
+        ui->input_textedit->setText(QString::fromStdString(input_string));
     }  catch (XML_Exception* e) {
         QMessageBox::StandardButton reply;
         reply = QMessageBox::critical(this, "XML Invalid",
                               (e->msg + '\n' + "Do you want me to Autocorrect your file? ").c_str()
                               , QMessageBox::Yes | QMessageBox::No);
         if(reply == QMessageBox::Yes){
-            string output = ident(correct_string(xml));
+            string output = ident(e->corrected_xml);
             ui->output_textedit->setText(QString::fromStdString(output));
             ui->input_textedit->setTextBackgroundColor(Qt::transparent);
             ui->statusbar->showMessage("Autocorrected XML (to complete open valid XML file)");
         }
         else{
-            ui->input_textedit->setTextBackgroundColor(Qt::red);
+            //ui->input_textedit->setTextBackgroundColor(Qt::red);
             ui->statusbar->showMessage("Invalid XML");
         }
         actionButtons(0);
+        ui->input_textedit->setText(format_input(e->errors_indxs));
     }
-    ui->input_textedit->setText(QString::fromStdString(input_string));
+//    ui->input_textedit->setText(QString::fromStdString(input_string));
 }
 
 void XML_Editor::actionButtons(bool b){
@@ -175,4 +180,36 @@ void XML_Editor::on_verticalSlider_valueChanged(int value)
     QTextCursor cursor_output = ui->output_textedit->textCursor();
     cursor_output.movePosition( QTextCursor::Start );
     ui->output_textedit->setTextCursor(cursor_output);
+}
+
+QString XML_Editor::format_input(vector<int> errors){
+    QString res = "<html>";
+    std::sort(errors.begin(), errors.end());
+    int cnt = 1, j = 0;
+    for (int i = 0; i < (int)input_string.size(); i++){
+        if(input_string[i] == '\n'){
+            res += "<br>";
+            cnt++;
+            if(errors[j] == cnt){
+                j++;
+                res += "<span style='color:red; text-decoration: underline wavy;'>";
+                i++;
+                while(input_string[i] != '\n' && i < (int)input_string.size()){
+                    if(input_string[i] == '<') res += "&lt;";
+                    else if(input_string[i] == '>') res += "&gt;";
+                    else res += input_string[i];
+                    i++;
+                }
+                res += "</span>";
+                i--;
+            }
+        }
+        else if(input_string[i] == '<') res += "&lt;";
+        else if(input_string[i] == '>') res += "&gt;";
+        else res += input_string[i];
+    }
+    res += "</html>";
+    qDebug() << res << '\n';
+    return res;
+
 }

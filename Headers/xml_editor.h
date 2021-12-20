@@ -42,5 +42,7 @@ private:
     Ui::XML_Editor *ui;
 
     void actionButtons(bool b);
+
+    QString format_input(std::vector<int> errrors);
 };
 #endif // XML_EDITOR_H
