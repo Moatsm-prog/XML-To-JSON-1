@@ -103,9 +103,14 @@ std::string correct_string(std::string Original_file){
     bool last_object = 0, closing_tag = 0;
     std::stack<std::string> s;
     for(int i = 0; i < (int)Original_file.size(); i++){
-        if(Original_file[i] != '<' && !closing_tag){
-            correct += Original_file[i];
-            last_object = 1;
+        if(Original_file[i] != '<'){
+            if(!closing_tag){
+                correct += Original_file[i];
+                last_object = 1;
+            }
+            if(closing_tag){
+                errors.push_back(i);
+            }
         }
         else if(Original_file[i] == '<'){
             std::string tag = "";

@@ -36,6 +36,7 @@ void XML_Editor::on_actionOpen_triggered()
     bool checkable = 1;
     qDebug() << "opening "<< ext << "file";
     ui->statusbar->showMessage("Valid XML");
+    root = nullptr;
     if(ext == "dxml" || ext ==  "dson"){
         actionButtons(0);
         if(ext == "dxml"){

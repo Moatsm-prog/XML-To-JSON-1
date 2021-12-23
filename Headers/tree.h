@@ -20,21 +20,24 @@ using std::vector;
 
 std::pair<string, int> extract_tag(int indx, string xml);
 
-int tree(int from , Node* parent, string xml){
-	pair<string , int> tag;
-	bool done = 0;
-	while(!done){
-		tag = extract_tag(from, xml);
-		Node* child = new Node();
-		child->tag = tag.first;
-		child->index = from;
-		parent->childs.push_back(child);
-        if(xml[from] == '<') from = tree(tag.second , child, xml);
-		else from = tag.second;
-		tag = extract_tag(from, xml);
-        done = (parent->tag == tag.first);
+int tree(int from, Node* root, string xml){
+    if(from < (int)xml.size()-1 && xml[from+1] == '/'){
+        return from;
     }
-    return tag.second;
+    pair<string, int> tag_p = extract_tag(from, xml);
+    root->tag = tag_p.first;
+    root->index = from;
+
+    bool done = (xml[from] != '<');
+    for(int i = tag_p.second;!done;){
+        Node* child = new Node();
+        i = tree(i, child, xml);
+        tag_p = extract_tag(i, xml);
+        done = (tag_p.first == root->tag);
+        if(child->tag.length()) root->childs.push_back(child);
+        else delete child;
+    }
+    return tag_p.second;
 }
 
 void clac_height(Node* root){
