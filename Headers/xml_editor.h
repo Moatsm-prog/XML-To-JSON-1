@@ -36,8 +36,6 @@ private slots:
 
     void on_verticalSlider_valueChanged(int value);
 
-    void on_verticalSlider_sliderReleased();
-
 private:
     Ui::XML_Editor *ui;
 
