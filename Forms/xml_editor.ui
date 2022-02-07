@@ -206,6 +206,13 @@ background-color:rgb(252, 252, 252)
               </property>
              </widget>
             </item>
+            <item>
+             <widget class="QPushButton" name="visualize">
+              <property name="text">
+               <string>Visualize</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
           <item>

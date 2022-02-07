@@ -57,5 +57,76 @@ Node* xml_to_tree(string xml){
     Node* node = new Node();
     tree(0, node, xml);
     clac_height(node);
-    return node->childs[0];
+    return node;
+}
+
+std::map<int, string> nameMap(Node* root){
+    Node* it;
+    std::map<int, string> names;
+    bool namef, idf;
+    int rootSize = root->childs.size();
+    for(int i = 0; i < rootSize; i++){
+        it = root->childs[i];
+        string name = "";
+        int id;
+        namef = false;
+        idf = false;
+        for(int j = 0; j < it->childs.size(); j++){
+            if(it->childs[j]->tag == "name"){
+                name = it->childs[j]->childs[0]->tag;
+                namef = true;
+            }
+            if(it->childs[j]->tag == "id"){
+                id = stoi(it->childs[j]->childs[0]->tag);
+                idf = true;
+            }
+            if(idf && namef) break;
+        }
+        names[id] = name;
+    }
+    return names;
+}
+
+string visualize(vector<vector<int>> followersList, std::map<int, string> names){
+    string dotFormat = "";
+    dotFormat += "digraph G{\n";
+    for(int i = 0; i < followersList.size(); i++){
+        if(followersList[i].size() > 1){
+            dotFormat +=  '"' + names[followersList[i][0]] + "\" -> {";
+            for(int j = 1; j < followersList[i].size(); j++){
+                dotFormat += '"' + names[followersList[i][j]] + '"';
+                if(j != followersList[i].size() - 1) dotFormat += ", ";
+            }
+            dotFormat += "}\n";
+        }
+    }
+    dotFormat += "}\n";
+    return dotFormat;
+}
+
+void makeList(Node* root){
+    vector<vector<int>> followersList;
+    int rootSize = root->childs.size();
+    std::map<int, string> names = nameMap(root);
+    Node* it;
+    for(int i = 0; i < rootSize; i++){
+        vector<int> userList;
+        for(int j = 0; j < root->childs[i]->childs.size(); j++){
+            if(root->childs[i]->childs[j]->tag == "id"){
+                userList.push_back(stoi(root->childs[i]->childs[j]->childs[0]->tag));
+                break;
+            }
+        }
+        for(int j = 0; j <root->childs[i]->childs.size(); j++){
+            if(root->childs[i]->childs[j]->tag == "followers"){
+                it = root->childs[i]->childs[j];
+                for(int k = 0; k < it->childs.size(); k++){
+                    userList.push_back(stoi(it->childs[k]->childs[0]->childs[0]->tag));
+                }
+            }
+        }
+        followersList.push_back(userList);
+    }
+    string Dot = visualize(followersList, names);
+    saveAsFile("sample.dot", Dot);
 }

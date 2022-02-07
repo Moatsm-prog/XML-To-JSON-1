@@ -5,6 +5,7 @@
 #include "QTextCursor"
 #include "algorithm"
 #include "../Headers/header.h"
+#include "../Headers/graph.h"
 
 XML_Editor::XML_Editor(QWidget *parent)
     : QMainWindow(parent)
@@ -214,3 +215,13 @@ QString XML_Editor::format_input(vector<int> errors){
     return res;
 
 }
+
+void XML_Editor::on_visualize_clicked()
+{
+    if(!root) return;
+    makeList(root);
+    system("dot -Tjpeg -O sample.dot");
+    Graph* g = new Graph;
+    g->show();
+}
+

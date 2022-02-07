@@ -10,7 +10,8 @@ CONFIG += c++11
 
 SOURCES += \
     Sources/main.cpp \
-    Sources/xml_editor.cpp
+    Sources/xml_editor.cpp \
+    Sources/graph.cpp
 
 HEADERS += \
     Headers/compression.h \
@@ -20,9 +21,11 @@ HEADERS += \
     Headers/json.h \
     Headers/tree.h \
     Headers/xml_editor.h \
+    Headers/graph.h
 
 FORMS += \
-    Forms/xml_editor.ui
+    Forms/xml_editor.ui \
+    Forms/graph.ui
 
 RC_ICONS = Resourses/icon.ico
 
