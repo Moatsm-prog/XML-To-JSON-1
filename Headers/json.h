@@ -63,7 +63,10 @@ string conv_children(Node* root, int identCount){
 }
 
 string tree_to_json(Node* root, json_type type){
+    Node* ptr = new Node();
+    ptr->childs.push_back(root);
+    ptr->height = root->height;
     if(type == normal)
-        return conv_children(root, 1);
-    else return conv_children_comp(root);
+        return conv_children(ptr, 1);
+    else return conv_children_comp(ptr);
 }

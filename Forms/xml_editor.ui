@@ -211,6 +211,26 @@ background-color:rgb(252, 252, 252)
               <property name="text">
                <string>Visualize</string>
               </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton{
+	background-color: #B5FBDD;
+    border-style: outset;
+    border-width: 2px;
+    border-radius: 10px;
+    border-color: beige;
+    font: bold 14px;
+    min-width: 10em;
+    padding: 6px;
+}
+QPushButton:pressed {
+    background-color: rgb(224, 0, 0);
+    border-style: inset;
+}
+
+QPushButton:hover{
+background-color:rgb(252, 252, 252)
+}</string>
+              </property>
              </widget>
             </item>
            </layout>

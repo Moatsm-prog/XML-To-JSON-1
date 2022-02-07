@@ -20,6 +20,7 @@ XML_Editor::XML_Editor(QWidget *parent)
     ui->output_textedit->setTabStopDistance(15);
     ui->input_textedit->setTabStopDistance(15);
     ui->input_textedit->setAcceptRichText(true);
+    ui->visualize->setEnabled(false);
 }
 
 XML_Editor::~XML_Editor()
@@ -38,6 +39,7 @@ void XML_Editor::on_actionOpen_triggered()
     qDebug() << "opening "<< ext << "file";
     ui->statusbar->showMessage("Valid XML");
     root = nullptr;
+    ui->visualize->setEnabled(false)    ;
     if(ext == "dxml" || ext ==  "dson"){
         actionButtons(0);
         if(ext == "dxml"){
@@ -104,7 +106,10 @@ void XML_Editor::on_format_button_clicked()
 void XML_Editor::on_convert_clicked()
 {
     if(!INPUT_FILE.size()) XML_Editor::on_actionOpen_triggered();
-    if(!root) root = xml_to_tree(xml);
+    if(!root){
+        root = xml_to_tree(xml);
+        ui->visualize->setEnabled(true);
+    }
     string json = tree_to_json(root, normal);
     ui->output_textedit->setText(QString::fromStdString(json));
     lastOp = JSON;
@@ -127,7 +132,10 @@ void XML_Editor::on_comp_json_clicked()
         XML_Editor::on_actionOpen_triggered();
         return;
     }
-    if(!root) root = xml_to_tree(xml);
+    if(!root){
+        root = xml_to_tree(xml);
+        ui->visualize->setEnabled(true);
+    }
     string json_comp = tree_to_json(root, compressed);
     QString fname = QFileDialog::getSaveFileName(this, "Save Compressed JSON", ".", "Compressed JSON files (*.dson)" );
     saveAsFile((fname + ".dson").toStdString(), json_comp);
