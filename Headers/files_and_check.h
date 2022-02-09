@@ -87,6 +87,16 @@ int line_numer(int indx){
 
 std::string get_err_massege(std::vector<int> &errors){
     std::string error_list = "";
+    int line1;
+    int line2;
+    for(int i = 0; i < errors.size() - 1; i++){
+        line1 = line_numer(errors[i]);
+        line2 = line_numer(errors[i + 1]);
+        if(line1 == line2){
+            errors.erase(errors.begin() + i + 1);
+            i--;
+        }
+    }
     error_list += "There are " + std::to_string(errors.size()) + " errors in:\n";
     for (int i = 0; i < (int) errors.size() ; i++){
         int line = line_numer(errors[i]);
