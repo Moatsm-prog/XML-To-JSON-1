@@ -91,14 +91,12 @@ string visualize(vector<vector<int>> followersList, std::map<int, string> names)
     string dotFormat = "";
     dotFormat += "digraph G{\n";
     for(int i = 0; i < followersList.size(); i++){
-        if(followersList[i].size() > 1){
-            dotFormat +=  '"' + names[followersList[i][0]] + "\" -> {";
-            for(int j = 1; j < followersList[i].size(); j++){
-                dotFormat += '"' + names[followersList[i][j]] + '"';
-                if(j != followersList[i].size() - 1) dotFormat += ", ";
-            }
-            dotFormat += "}\n";
+        dotFormat +=  '"' + names[followersList[i][0]] + "\" -> {";
+        for(int j = 1; j < followersList[i].size(); j++){
+            dotFormat += '"' + names[followersList[i][j]] + '"';
+            if(j != followersList[i].size() - 1) dotFormat += ", ";
         }
+        dotFormat += "}\n";
     }
     dotFormat += "}\n";
     return dotFormat;
